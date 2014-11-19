@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>firechicago's Awesome Link Aggregator!</title>
+</head>
+<body>
+  <h1>firechicago's Awesome Link Aggregator!</h1>
+  <p>Check out the cool links below, or go <a href="/submit">here</a> to submit your own!</p>
+  <ul>
+    <% @links.each do |link|%>
+      <li>
+        <a href="<%=link[:url]%>"
+          <h3><%=link[:title]%></h3>
+        </a>
+        <p><%=link[:description]%></p>
+      </li>
+    <%end%>
+  </ul>
+</body>
+</html>
