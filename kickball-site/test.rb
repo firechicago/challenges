@@ -12,6 +12,7 @@ end
 positions.uniq!
 
 get '/' do
+  erb :index
   text = "<h1>League of Cool Kickball Professionals</h1>"
   text << "<h3>Team Rosters</h3>"
   file.each do |teamname, roster|
