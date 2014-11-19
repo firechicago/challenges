@@ -1,4 +1,7 @@
 test2,test2,test2
 test,,test
-Google,,It's the cool new search engine!
-Metafilter,,"One of these new ""group blogs"" everyone is talking about"
+Google,http://www.google.com,It's the cool new search engine!
+Metafilter,http://www.metafilter.com,"One of these new ""group blogs"" everyone is talking about"
+XKCD,http://www.xkcd.com,A great geeky comic
+Sluggy Freelance,http://www.sluggy.com,One of the oldest webcomics
+GeoCities,http://www.geocities.com,Where you can build an awesome website with flashing text and animated gifs!

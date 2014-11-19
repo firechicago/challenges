@@ -45,6 +45,6 @@ post "/submission" do
   @url = params[:url]
   @description = params[:description]
   post_article(@title,@url,@description)
-  @message = "Thanks for submitting \"#{@title}\"!"
+  @message = "Thanks for submitting \"#{@title}\"! <a href=\"../articles\">Click here</a> to go back to the main page"
   erb :submit
 end
