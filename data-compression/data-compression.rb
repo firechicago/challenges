@@ -68,7 +68,7 @@ def lzw_compress(plaintext)
 end
 
 def compress_text(filename)
-  cmp_file_name = filename +".compressed"
+  cmp_file_name = filename + ".compressed"
   start_time = Time.now
   plaintext = File.read(filename)
   compressed_text = lzw_compress(plaintext)

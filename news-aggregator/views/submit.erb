@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>firechicago's Awesome Link Submission Page!</title>
+</head>
+<body>
+  <h1>firechicago's Awesome Link Submission Page!</h1>
+  <form action="/submission" method="post">
+    <p><label for="title">Give a title for your link.</label></p>
+    <input type="text" name="title" id="title_input">
+    <p><label for="url">Input the URL</label></p>
+    <input type="text" name="address" id="url_input">
+    <p><label for="description">Give a title for your link.</label></p>
+    <input type="text" name="description" id="description_input">
+    <input type="submit" value="Submit a link">
+  </form>
+  <h3><%=@message%></h3>
+</body>
+</html>
