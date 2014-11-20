@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= @movie_info[:title] %></title>
+</head>
+<body>
+  <h1><%= @movie_info[:title] %></h1>
+  <h3><%= @movie_info[:year] %></h3>
+  <p>Rated <%= @movie_info[:rating] %>/100</p>
+  <p><b>Genre:</b> <%= @movie_info[:genre] %></p>
+  <p><b>Produced or distributed by:</b> <%= @movie_info[:studio] %></p>
+  <p><b>Synopsis:</b> <%= @movie_info[:synopsis] %></p>
+</body>
+</html>
