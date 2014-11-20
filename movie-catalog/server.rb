@@ -23,7 +23,8 @@ end
 titles.sort_by!{|movie| movie[1]}
 
 get "/movies" do
-  @titles = titles
+  @page_number = [Integer(params[:page] || 1),1].max
+  @titles = titles[((@page_number-1)*20)..(@page_number*20)]
   # binding.pry
   erb :index
 end

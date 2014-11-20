@@ -15,5 +15,10 @@
     </li>
     <%end%>
   </ul>
+  <p><%if @page_number > 1 then%>
+    <a href="/movies?page=<%=@page_number-1%>">Previous Page</a>
+    <%end%>
+    <a href="/movies?page=<%=@page_number+1%>">Next Page</a>
+  </p>
 </body>
 </html>
