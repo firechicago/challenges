@@ -44,14 +44,7 @@ def post_article(title, url, description)
   unless description.length >=20
     return "Submission Failed. Description must contain at least 20 characters."
   end
-  current_links = CSV.read("links.csv")
-  current_links.each do |link|
-    return "Submission Failed. This link has already been submitted." if url == link[1]
-  end
-  CSV.open("links.csv", "w") do |csv|
-    current_links.each do |link|
-      csv << link
-    end
+  CSV.open("links.csv", "a") do |csv|
     csv << new_link
   end
   "Thanks for submitting \"#{title}\"! <a href=\"../articles\">Click here</a> to go back to the main page"
