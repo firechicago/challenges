@@ -25,12 +25,24 @@ titles.sort_by!{|movie| movie[1]}
 get "/movies" do
   @page_number = [Integer(params[:page] || 1),1].max
   @titles = titles[((@page_number-1)*20)..(@page_number*20)]
-  # binding.pry
   erb :index
 end
 
 get "/movies/:movie_id" do
   @movie_info = movies_hash[params[:movie_id]]
-  # binding.pry
   erb :movie
+end
+
+get "/search" do
+  @search_string = params[:search_string]
+  @found_movies = []
+  movies_hash.each do |index, movie|
+    # binding.pry
+    if (movie[:title].to_s + movie[:synopsis].to_s).downcase.include?(@search_string.downcase)
+      @found_movies << [index, movie[:title]]
+    end
+  end
+  @page_number = [Integer(params[:page] || 1),1].max
+  @titles = @found_movies[((@page_number-1)*20)..(@page_number*20)]
+  erb :search
 end

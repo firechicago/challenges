@@ -2,10 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Movie Catalog</title>
+  <title>Search Results</title>
 </head>
 <body>
-  <h1>Movie Catalog</h1>
+  <h1>Search Results</h1>
+  <h5>Page <%=@page_number%> of <%=@found_movies.length/20 + 1%></h5>
   <ul>
     <%@titles.each do |title|%>
     <li>
@@ -16,9 +17,11 @@
     <%end%>
   </ul>
   <p><%if @page_number > 1 then%>
-    <a href="/movies?page=<%=@page_number-1%>">Previous Page</a>
+    <a href="/search?search_string=<%=@search_string%>&page=<%=@page_number-1%>">Previous Page</a>
     <%end%>
-    <a href="/movies?page=<%=@page_number+1%>">Next Page</a>
+    <%if @page_number < (@found_movies.length/20 + 1) then%>
+    <a href="/search?search_string=<%=@search_string%>&page=<%=@page_number+1%>">Next Page</a>
+    <%end%>
   </p>
   <form action="/search" method="get">
     <p><label for="search_box">Search:</label>
