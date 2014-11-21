@@ -21,6 +21,14 @@ def build_huffman_dict(top_node)
   @dictionary
 end
 
+def next_leaf(first_queue,second_queue)
+  return second_queue.pop if first_queue.empty?
+  if second_queue.empty? || first_queue.last.value < second_queue.last.value
+    first_queue.pop
+  else
+    second_queue.pop
+  end
+end
 
 def huffman_uncompress(compressed_text)
 
@@ -62,31 +70,22 @@ def huffman_compress(plaintext)
   end
   first_queue.sort_by! {|leaf| leaf.value}
   first_queue.reverse!
-  until first_queue.empty?
-    if second_queue.empty? || first_queue.last.value < second_queue.last.value
-      left = first_queue.pop
-    else
-      left = second_queue.pop
-    end
-    if second_queue.empty? || first_queue.last.value < second_queue.last.value
-      right = first_queue.pop
-    else
-      right = second_queue.pop
-    end
+  until first_queue.empty? && second_queue.length == 1
+    left = next_leaf(first_queue,second_queue)
+    right = next_leaf(first_queue,second_queue)
     new_leaf = new_parent(left,right)
     second_queue.unshift(new_leaf)
   end
-  new_leaf = new_parent(second_queue[0],second_queue[1])
-  # binding.pry
   dictionary = build_huffman_dict(new_leaf)
   puts dictionary
   compressed_text = []
   plaintext.each_char do |char|
     compressed_text << dictionary[char]
   end
+  # binding.pry
   compressed_text
 end
-puts huffman_compress(ARGV[0])
+puts huffman_compress(ARGV.join)
 # def compress_text(filename)
 #   cmp_file_name = filename + ".compressed"
 #   start_time = Time.now
