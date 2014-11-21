@@ -1,5 +1,4 @@
 require "sinatra"
-require "pry"
 require "csv"
 
 movies = CSV.read("movies.csv")
@@ -37,7 +36,6 @@ get "/search" do
   @search_string = params[:search_string]
   @found_movies = []
   movies_hash.each do |index, movie|
-    # binding.pry
     if (movie[:title].to_s + movie[:synopsis].to_s).downcase.include?(@search_string.downcase)
       @found_movies << [index, movie[:title]]
     end
