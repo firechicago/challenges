@@ -30,8 +30,41 @@ def next_leaf(first_queue,second_queue)
   end
 end
 
-def huffman_uncompress(compressed_text)
+def rebuild_dictionary(dict_string)
+  dict_entries = dict_string.split(":-")
+  dictionary = Hash.new
+  dict_entries.each do |entry|
+    dictionary[entry[1..-1]] = entry[0]
+  end
+  dictionary
+end
 
+def translate(text_string, dictionary)
+  binary = convert_from_16bit(text_string)
+  binary.reverse!
+  result = ""
+  current_string = ""
+  while binary.length > 0
+    current_string << binary[-1]
+    binary.chop!
+    unless dictionary[current_string].nil?
+      
+
+def huffman_uncompress(compressed_text)
+  split = compressed_text.split("\n:::\n")
+  dict_string = split[0]
+  text_string = split[1]
+  dictionary = rebuild_dictionary(dict_string)
+  translate(text_string, dictionary)
+end
+
+def convert_to_16bit (string)
+  result = ""
+  while ! string.nil? #|| string.length > 0
+    result << [string[0..15].to_i(2)].pack("S")
+    string = string[16..-1]
+  end
+  result
 end
 
 def uncompress_text(filename)
@@ -73,44 +106,47 @@ def huffman_compress(plaintext)
   until first_queue.empty? && second_queue.length == 1
     left = next_leaf(first_queue,second_queue)
     right = next_leaf(first_queue,second_queue)
-    new_leaf = new_parent(left,right)
-    second_queue.unshift(new_leaf)
+    second_queue.unshift(new_parent(left,right))
   end
-  dictionary = build_huffman_dict(new_leaf)
-  puts dictionary
+  dictionary = build_huffman_dict(second_queue[0])
   compressed_text = []
   plaintext.each_char do |char|
     compressed_text << dictionary[char]
   end
-  # binding.pry
-  compressed_text
+  final_string = ""
+  dictionary.each do |key, value|
+    final_string << "#{key}#{value}:-"
+  end
+  final_string << "\n:::\n"
+  final_string << convert_to_16bit(compressed_text.join)
+  final_string
 end
-puts huffman_compress(ARGV.join)
-# def compress_text(filename)
-#   cmp_file_name = filename + ".compressed"
-#   start_time = Time.now
-#   plaintext = File.read(filename)
-#   compressed_text = huffman_compress(plaintext)
-#   File.write(cmp_file_name, compressed_text)
-#   end_time = Time.now
-#   file_size = File.new(filename).size
-#   cmp_file_size = File.new(cmp_file_name).size
-#   puts "#{cmp_file_name} created\n\n"
-#   puts "---------------------------------------------------------"
-#   puts "Original file name: \t#{filename}"
-#   puts "Compressed file name: \t#{cmp_file_name}"
-#   puts "Original file size: \t#{file_size/1000}K"
-#   puts "Compressed file size: \t#{cmp_file_size/1000}K"
-#   puts "Compression took #{end_time - start_time} seconds"
-#   puts "Compressed file is #{((1 - (cmp_file_size.to_f/file_size))*100).round(1)}% smaller than the original file"
-#   puts "Compression Ratio: #{(file_size.to_f/cmp_file_size).round(2)} x"
-#   puts "---------------------------------------------------------"
-#
-# end
-#
-# mode = ARGV[0]
-# if mode == "-c"
-#   compress_text(ARGV[1])
-# elsif mode == "-u"
-#   uncompress_text(ARGV[1])
-# end
+
+def compress_text(filename)
+  cmp_file_name = filename + ".compressed"
+  start_time = Time.now
+  plaintext = File.read(filename)
+  compressed_text = huffman_compress(plaintext)
+  File.write(cmp_file_name, compressed_text)
+  end_time = Time.now
+  file_size = File.new(filename).size
+  cmp_file_size = File.new(cmp_file_name).size
+  puts "#{cmp_file_name} created\n\n"
+  puts "---------------------------------------------------------"
+  puts "Original file name: \t#{filename}"
+  puts "Compressed file name: \t#{cmp_file_name}"
+  puts "Original file size: \t#{file_size/1000}K"
+  puts "Compressed file size: \t#{cmp_file_size/1000}K"
+  puts "Compression took #{end_time - start_time} seconds"
+  puts "Compressed file is #{((1-cmp_file_size.to_f/file_size)*100).round(1)}% smaller than the original file"
+  puts "Compression Ratio: #{(file_size.to_f/cmp_file_size).round(2)} x"
+  puts "---------------------------------------------------------"
+
+end
+
+mode = ARGV[0]
+if mode == "-c"
+  compress_text(ARGV[1])
+elsif mode == "-u"
+  uncompress_text(ARGV[1])
+end
