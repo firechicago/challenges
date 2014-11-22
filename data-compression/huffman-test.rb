@@ -39,8 +39,32 @@ def rebuild_dictionary(dict_string)
   dictionary
 end
 
+
+def convert_to_8bit (string)
+  result = ""
+  until string.nil? 
+    result << [string[0..7].to_i(2)].pack("C")
+    string = string[8..-1]
+  end
+  result
+end
+
+def convert_from_8bit(text_string)
+  text_string.reverse!
+  result = ""
+  until text_string.empty?
+    binary_string = text_string[-1].unpack("C")[0].to_s(2)
+    until binary_string.length == 8
+      binary_string = "0" + binary_string
+    end
+    result << binary_string
+    text_string.chop!
+  end
+  result
+end
+
 def translate(text_string, dictionary)
-  binary = convert_from_16bit(text_string)
+  binary = convert_from_8bit(text_string)
   binary.reverse!
   result = ""
   current_string = ""
@@ -48,7 +72,12 @@ def translate(text_string, dictionary)
     current_string << binary[-1]
     binary.chop!
     unless dictionary[current_string].nil?
-      
+      result << dictionary[current_string]
+      current_string = ""
+    end
+  end
+  result
+end
 
 def huffman_uncompress(compressed_text)
   split = compressed_text.split("\n:::\n")
@@ -58,17 +87,9 @@ def huffman_uncompress(compressed_text)
   translate(text_string, dictionary)
 end
 
-def convert_to_16bit (string)
-  result = ""
-  while ! string.nil? #|| string.length > 0
-    result << [string[0..15].to_i(2)].pack("S")
-    string = string[16..-1]
-  end
-  result
-end
 
 def uncompress_text(filename)
-  compressed_text = File.read(filename).unpack(@encoding_mode)
+  compressed_text = File.read(filename)
   plaintext = huffman_uncompress(compressed_text)
 
   File.open(("_" + filename[0..-12]), "w") do |file|
@@ -118,7 +139,7 @@ def huffman_compress(plaintext)
     final_string << "#{key}#{value}:-"
   end
   final_string << "\n:::\n"
-  final_string << convert_to_16bit(compressed_text.join)
+  final_string << convert_to_8bit(compressed_text.join)
   final_string
 end
 
@@ -150,3 +171,9 @@ if mode == "-c"
 elsif mode == "-u"
   uncompress_text(ARGV[1])
 end
+# string = "1010101010101010"
+# other_string = convert_from_8bit(convert_to_8bit(string))
+# puts string == other_string
+# puts string
+# puts convert_to_8bit(string)
+# puts other_string
