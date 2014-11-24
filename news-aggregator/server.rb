@@ -1,23 +1,20 @@
-require "sinatra"
-require "CSV"
-
-
+require 'sinatra'
+require 'CSV'
 
 def read_csv(filename)
   raw_data = CSV.read(filename)
   links = []
-  raw_data.each do |link|
+  raw_data.each {|link|
     new_link = {
-      title:link[0],
-      url:link[1],
-      description:link[2]
-    }
+      title: link[0],
+      url: link[1],
+      description: link[2]}
     links << new_link
-  end
+    }
   links.reverse
 end
 
-def is_complete?(array)
+def complete?(array)
   array.each do |item|
     if item.nil? || item == ""
       return false
@@ -26,7 +23,7 @@ def is_complete?(array)
   true
 end
 
-def is_valid_uri?(uri)
+def valid_uri?(uri)
   !! (/^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$/).match(uri)
 end
 
@@ -35,10 +32,10 @@ def post_article(title, url, description)
   new_link << title
   new_link << url
   new_link << description
-  unless is_complete?(new_link)
+  unless complete?(new_link)
     return "Submission Failed. Please fill out all fields"
   end
-  unless is_valid_uri?(url)
+  unless valid_uri?(url)
     return "Submission Failed. Invalid URL"
   end
   unless description.length >=20
@@ -54,7 +51,6 @@ def post_article(title, url, description)
   "Thanks for submitting \"#{title}\"! <a href=\"../articles\">Click here</a> to go back to the main page"
 end
 
-
 get "/articles" do
   @links = read_csv("links.csv")
   erb :index
@@ -68,6 +64,6 @@ post "/submission" do
   @title = params[:title]
   @url = params[:url]
   @description = params[:description]
-  @message = post_article(@title,@url,@description)
+  @message = post_article(@title, @url, @description)
   erb :submit
 end
