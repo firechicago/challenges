@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= @movie["title"] %></title>
+</head>
+<body>
+  <h1><%= @movie["title"] %></h1>
+  <h3><%= @movie["year"] %></h3>
+  <p>Rated <%= @movie["rating"] %>/100</p>
+  <p><b>Genre:</b> <%= @movie["genre"] %></p>
+  <p><b>Produced or distributed by:</b> <%= @movie["studio"] %></p>
+  <p><b>Synopsis:</b> <%= @movie["synopsis"] %></p>
+  <h3>Cast List</h3>
+  <table>
+    <tr>
+      <td>
+        Actor
+      </td>
+      <td>
+        Character
+      </td>
+    </tr>
+    <%(0..(@size_of_cast-1)).each do |index|%>
+    <tr>
+      <td>
+        <a href="/actors/<%=@cast[index]["id"]%>">
+          <%=@cast[index]["name"]%>
+        </a>
+      </td>
+      <td>
+        <%=@cast[index]["character"]%>
+      </td>
+    </tr>
+    <%end%>
+  </table>
+</body>
+</html>

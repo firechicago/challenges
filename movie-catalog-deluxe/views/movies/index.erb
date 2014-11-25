@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Movie Catalog</title>
+</head>
+<body>
+  <h1>Movie Catalog</h1>
+  <table>
+    <tr>
+      <td>
+        Title
+      </td>
+      <td>
+        Year
+      </td>
+      <td>
+        Rating
+      </td>
+      <td>
+        Genre
+      </td>
+      <td>
+        Studio
+      </td>
+    </tr>
+    <% (0..19).each do |index| %>
+      <tr>
+        <td>
+          <a href="/movies/<%=@movies[index]["id"]%>">
+            <%=@movies[index]["title"]%>
+          </a>
+        </td>
+        <td>
+          <%=@movies[index]["year"]%>
+        </td>
+        <td>
+          <%=@movies[index]["rating"]%>
+        </td>
+        <td>
+          <%=@movies[index]["genre"]%>
+        </td>
+        <td>
+          <%=@movies[index]["studio"]%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+
+  <p><%if @page > 1 then%>
+    <a href="/movies?page=<%=@page-1%>&order=<%=@order%>">Previous Page</a>
+    <%end%>
+    <a href="/movies?page=<%=@page+1%>&order=<%=@order%>">Next Page</a>
+  </p>
+  <form action="/search" method="get">
+    <p><label for="search_box">Search:</label>
+      <input type="text" name="search_string" id="search_input">
+    </p>
+  </form>
+</body>
+</html>
