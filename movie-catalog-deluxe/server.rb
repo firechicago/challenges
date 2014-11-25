@@ -32,14 +32,16 @@ def actors_list(page)
   actors
 end
 
-def get_movies(page, order)
+def get_movies(page, order, query)
+  query = '%' + query + '%'
   movies = db_connection do |conn|
     offset = (page - 1) * 20
     # binding.pry
     conn.exec_params("SELECT movies.id, movies.title, movies.year, movies.rating,
     genres.name AS genre, studios.name AS studio FROM movies LEFT JOIN genres
     ON movies.genre_id = genres.id LEFT JOIN studios ON movies.studio_id =
-    studios.id  ORDER BY movies.#{order} LIMIT 20 OFFSET $1", [offset])
+    studios.id  WHERE movies.title LIKE $1 OR movies.synopsis LIKE $1 ORDER BY
+    movies.#{order} LIMIT 20 OFFSET $2", [query, offset])
   end
   movies
 end
@@ -72,7 +74,23 @@ get '/movies' do
   end
   page = 1 unless page >= 1
   @page = page
-  @movies = get_movies(@page, @order)
+  @query = params[:query] || ''
+  @movies = get_movies(@page, @order, @query)
+  # binding.pry
+  erb :'movies/index'
+end
+
+get '/movies/search' do
+  page = params[:page].to_i
+  if params[:order] == 'year' || params[:order] == 'rating'
+    @order = params[:order]
+  else
+    @order = 'title'
+  end
+  page = 1 unless page >= 1
+  @page = page
+  @query = params[:query] || ''
+  @movies = get_movies(@page, @order, @query)
   # binding.pry
   erb :'movies/index'
 end

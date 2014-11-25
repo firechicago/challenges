@@ -24,37 +24,41 @@
         Studio
       </td>
     </tr>
-    <% (0..19).each do |index| %>
+    <% @movies.each do |movie| %>
       <tr>
         <td>
-          <a href="/movies/<%=@movies[index]["id"]%>">
-            <%=@movies[index]["title"]%>
+          <a href="/movies/<%=movie["id"]%>">
+            <%=movie["title"]%>
           </a>
         </td>
         <td>
-          <%=@movies[index]["year"]%>
+          <%=movie["year"]%>
         </td>
         <td>
-          <%=@movies[index]["rating"]%>
+          <%=movie["rating"]%>
         </td>
         <td>
-          <%=@movies[index]["genre"]%>
+          <%=movie["genre"]%>
         </td>
         <td>
-          <%=@movies[index]["studio"]%>
+          <%=movie["studio"]%>
         </td>
       </tr>
     <%end%>
   </table>
 
   <p><%if @page > 1 then%>
-    <a href="/movies?page=<%=@page-1%>&order=<%=@order%>">Previous Page</a>
+    <a href="/movies?page=<%=@page-1%>&order=<%=@order%>&query=<%=@query%>">
+      Previous Page
+    </a>
     <%end%>
-    <a href="/movies?page=<%=@page+1%>&order=<%=@order%>">Next Page</a>
+    <a href="/movies?page=<%=@page+1%>&order=<%=@order%>&query=<%=@query%>">
+      Next Page
+    </a>
   </p>
   <form action="/search" method="get">
     <p><label for="search_box">Search:</label>
-      <input type="text" name="search_string" id="search_input">
+      <input type="text" name="query" id="search_input">
     </p>
   </form>
 </body>
