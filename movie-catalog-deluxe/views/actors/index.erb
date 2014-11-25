@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Actors</title>
+</head>
+<body>
+  <h1>Actors</h1>
+  <ul>
+    <%@actors_list.each do |actor|%>
+    <li>
+      <a href="/actors/<%= actor['id'] %>">
+        <%= actor['name'] %>
+      </a>
+    </li>
+    <%end%>
+  </ul>
+  <p><%if @page > 1 then%>
+    <a href="/actors?page=<%=@page-1%>">Previous Page</a>
+    <%end%>
+    <a href="/actors?page=<%=@page+1%>">Next Page</a>
+  </p>
+  <form action="/search" method="get">
+    <p><label for="search_box">Search:</label>
+      <input type="text" name="search_string" id="search_input">
+    </p>
+  </form>
+</body>
+</html>

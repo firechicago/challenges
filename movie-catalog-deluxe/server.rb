@@ -11,6 +11,27 @@ def db_connection
   end
 end
 
+def get_credits(actor_id)
+  credits = db_connection do |conn|
+    # binding.pry
+    conn.exec_params("SELECT actors.name, movies.title, movies.id AS movie_id,
+    cast_members.character, movies.year FROM actors LEFT JOIN cast_members
+    ON actors.id = cast_members.actor_id JOIN movies ON cast_members.movie_id =
+    movies.id WHERE actors.id = $1 ORDER BY movies.year ", [actor_id])
+  end
+  credits
+end
+
+def actors_list(page)
+  actors = db_connection do |conn|
+    offset = (page - 1) * 20
+    # binding.pry
+    conn.exec_params("SELECT actors.id, actors.name FROM actors ORDER BY
+    actors.name LIMIT 20 OFFSET $1", [offset])
+  end
+  actors
+end
+
 def get_movies(page, order)
   movies = db_connection do |conn|
     offset = (page - 1) * 20
@@ -65,9 +86,15 @@ get '/movies/:id' do
 end
 
 get '/actors' do
-
+  @page = params[:page].to_i
+  @page = 1 unless @page >= 1
+  @actors_list = actors_list(@page)
+  erb :'actors/index'
 end
 
 get '/actors/:id' do
-
+  @actor_id = params[:id]
+  @credits = get_credits(@actor_id)
+  # binding.pry
+  erb :'actors/show'
 end
