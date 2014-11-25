@@ -1,4 +1,4 @@
--- 1. What are the top 50 worst rated movies? The results should
+psql-- 1. What are the top 50 worst rated movies? The results should
 -- include the movie title and rating and be sorted by the worst
 -- rating first.
 
@@ -27,7 +27,7 @@ SELECT title, year, rating FROM movies WHERE year < 1990 AND year > 1979
 
 SELECT actors.name, movies.title, movies.year FROM movies JOIN cast_members ON
   movies.id = cast_members.movie_id JOIN actors ON cast_members.actor_id =
-  actors.id WHERE cast_members.character = 'James Bond' ORDER BY movies.year ASC;
+  actors.id WHERE cast_members.character LIKE '%James Bond%' ORDER BY movies.year ASC;
 
 -- 6. What movies has Julianne Moore starred in? The results should
 -- include the movie title, year released, and name of the genre,
