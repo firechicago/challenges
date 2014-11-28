@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%=@recipe_info[0]['name']%></title>
+</head>
+<body>
+  <h1><%=@recipe_info[0]['name']%></h1>
+  <p><%=@recipe_info[0]['description']%></p>
+  <h3>Ingredients</h3>
+  <ul>
+    <%@recipe_info.each do |ingredients|%>
+    <li>
+      <%=ingredients['ingredient']%>
+    </li>
+    <%end%>
+  </ul>
+  <h3>Instructions</h3>
+  <p><%=@recipe_info[0]['instructions']%></p>
+</body>
+</html>

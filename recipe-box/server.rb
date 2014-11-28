@@ -40,12 +40,11 @@ get '/recipes' do
   @page = page
   # @query = params[:query] || ''
   @recipes = recipes_list(@page)
-  # binding.pry
   erb :'recipes/index'
 end
 
 get '/recipes/:id' do
   @recipe_info = get_recipe(params[:id])
-  binding.pry
+  # binding.pry
   erb :'recipes/show'
 end
