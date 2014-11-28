@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Christopher's Recipe Box</title>
+</head>
+<body>
+  <h1>Christopher's Recipe Box</h1>
+  <table>
+    <tr>
+      <td>
+        Recipe Name
+      </td>
+      <td>
+        Description
+      </td>
+    </tr>
+    <% @recipes.each do |recipe| %>
+    <tr>
+      <td>
+        <a href="/recipes/<%=recipe["id"]%>">
+          <%=recipe["name"]%>
+        </a>
+      </td>
+      <td>
+        <%=recipe["description"]%>
+      </td>
+    </tr>
+    <%end%>
+  </table>
+
+  <p><%if @page > 1 then%>
+    <a href="/recipes?page=<%=@page-1%>&query=<%=@query%>">
+      Previous Page
+    </a>
+    <%end%>
+    <a href="/recipes?page=<%=@page+1%>&query=<%=@query%>">
+      Next Page
+    </a>
+  </p>
+  <!-- <form action="/recipes/search" method="get">
+    <p><label for="search_box">Search:</label>
+      <input type="text" name="query" id="search_input">
+    </p>
+  </form> -->
+</body>
+</html>
