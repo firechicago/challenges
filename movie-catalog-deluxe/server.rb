@@ -2,6 +2,7 @@ require 'sinatra'
 require 'pry'
 require 'pg'
 
+
 def db_connection
   begin
     connection = PG.connect(dbname: 'movies')

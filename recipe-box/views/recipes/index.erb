@@ -1,47 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Christopher's Recipe Box</title>
-</head>
-<body>
+
   <h1>Christopher's Recipe Box</h1>
-  <table>
-    <tr>
-      <td>
-        Recipe Name
-      </td>
-      <td>
-        Description
-      </td>
-    </tr>
+  <div class="row">
+    <div class="large-3 columns">
+      <h4>Recipe Name</h4>
+    </div>
+    <div class="large-9 columns">
+      <h4>Description</h4>
+    </div>
+  </div>
+
     <% @recipes.each do |recipe| %>
-    <tr>
-      <td>
+    <div class="row" style="padding:10px">
+      <div class="columns large-3">
         <a href="/recipes/<%=recipe["id"]%>">
           <%=recipe["name"]%>
         </a>
-      </td>
-      <td>
-        <%=recipe["description"]%>
-      </td>
-    </tr>
+      </div>
+      <div class="columns large-9">
+        <%=recipe["description"][0..255] + "..."%>
+      </div>
+    </div>
     <%end%>
-  </table>
 
-  <p><%if @page > 1 then%>
-    <a href="/recipes?page=<%=@page-1%>&query=<%=@query%>">
+  <div class="row">
+  <%if @page > 1 then%>
+    <a class="small button columns small-4" href="/recipes?page=<%=@page-1%>">
       Previous Page
     </a>
     <%end%>
-    <a href="/recipes?page=<%=@page+1%>&query=<%=@query%>">
+    <%unless @recipes.num_tuples < 20 %>
+    <a class="small button columns small-4" href="/recipes?page=<%=@page+1%>">
       Next Page
     </a>
-  </p>
+  <%end%>
+</div>
   <!-- <form action="/recipes/search" method="get">
     <p><label for="search_box">Search:</label>
       <input type="text" name="query" id="search_input">
     </p>
   </form> -->
-</body>
-</html>

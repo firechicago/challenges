@@ -38,13 +38,21 @@ get '/recipes' do
   page = params[:page].to_i
   page = 1 unless page >= 1
   @page = page
+  @page_title = "Christopher's Recipe Box"
   # @query = params[:query] || ''
   @recipes = recipes_list(@page)
+  # binding.pry
   erb :'recipes/index'
 end
 
 get '/recipes/:id' do
   @recipe_info = get_recipe(params[:id])
-  # binding.pry
+  @page_title = @recipe_info[0]['name']
+  description = @recipe_info[0]['description'].delete("\t").split("\n")
+  @description = ''
+  description.each { |para| @description += '<p>' + para + '</p>' }
+  instructions = @recipe_info[0]['instructions'].delete("\t").split("\n")
+  @instructions = ''
+  instructions[2..-1].each { |para| @instructions += '<p>' + para + '</p>' }
   erb :'recipes/show'
 end
