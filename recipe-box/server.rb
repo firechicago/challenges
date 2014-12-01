@@ -39,9 +39,7 @@ get '/recipes' do
   page = 1 unless page >= 1
   @page = page
   @page_title = "Christopher's Recipe Box"
-  # @query = params[:query] || ''
   @recipes = recipes_list(@page)
-  # binding.pry
   erb :'recipes/index'
 end
 

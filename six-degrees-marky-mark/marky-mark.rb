@@ -48,6 +48,8 @@ def connections(node)
   result
 end
 
+start_time = Time.now
+
 actors_data = CSV.read('actors.csv')
 @actors = {}
 actors_data.each do |row|
@@ -67,6 +69,10 @@ cast_data.each do |row|
   @actors[row[0]].add_movie(row[1])
   @movies[row[1]].add_cast_member(row[0])
 end
+
+end_time = Time.now
+
+puts "Database built in #{end_time - start_time} seconds."
 
 def pathfind(start_actor, end_actor)
   previous = {}
