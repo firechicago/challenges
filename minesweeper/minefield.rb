@@ -23,13 +23,12 @@ class Minefield
   # when the player clicks on the cell.
   def clear(row, col)
     @cleared << { row: row, column: col }
-    if adjacent_mines(row, col) == 0
-      adjacent_cells(row, col).each do |cell|
-        next if cell[:row] > row_count || cell[:row] < 0
-        next if cell[:column] > column_count || cell[:column] < 0
-        next if @cleared.include?(cell)
-        clear(cell[:row], cell[:column])
-      end
+    return @cleared unless adjacent_mines(row, col) == 0
+    adjacent_cells(row, col).each do |cell|
+      next if cell[:row] > row_count || cell[:row] < 0
+      next if cell[:column] > column_count || cell[:column] < 0
+      next if @cleared.include?(cell)
+      clear(cell[:row], cell[:column])
     end
   end
 
@@ -38,11 +37,9 @@ class Minefield
     [-1, 0, 1].product([-1, 0, 1]).each do |point|
       result << {row: row + point[0], column: col + point[1]}
     end
-    # binding.pry
     result.delete({row: row, column: col})
     result
   end
-
 
   # Check if any cells have been uncovered that also contained a mine. This is
   # the condition used to see if the player has lost the game.

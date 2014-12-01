@@ -103,7 +103,6 @@ def recover_path(end_node, start_node, previous_hash)
   path = [end_node.name]
   current_node = end_node
   until current_node == start_node
-    # binding.pry
     current_node = previous_hash[current_node]
     path << current_node.name
   end
