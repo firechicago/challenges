@@ -6,7 +6,7 @@ require 'pry'
 class Deck
   def initialize
     @cards = []
-    values = [2,3,4,5,6,7,8,9,10,:Jack, :Queen, :King, :Ace]
+    values = [2, 3, 4, 5, 6, 7, 8, 9, 10, :Jack, :Queen, :King, :Ace]
     suits = ['♣', '♥', '♦', '♠']
     values.each do |value|
       suits.each do |suit|
@@ -22,14 +22,14 @@ class Deck
 end
 
 class Card
+  attr_reader :value, :suit
+
   def initialize(value, suit)
     @value = value
     @suit = suit
   end
 
-  attr_reader :value, :suit
-
-  def name
+  def to_s
     "#{value} of #{suit}"
   end
 
@@ -51,9 +51,8 @@ class Hand
   attr_reader :player
 
   def hit(deck)
-    new_card = deck.draw
-    @cards << new_card
-    puts "#{@player} was dealt #{new_card.name}"
+    @cards << deck.draw
+    puts "#{@player} was dealt #{@cards.last}"
   end
 
   def value
@@ -76,6 +75,10 @@ class Hand
   def bust?
     value > 21
   end
+
+  def to_s
+    "#{player} score: #{value}"
+  end
 end
 
 deck = Deck.new
@@ -85,43 +88,56 @@ puts "Welcome to Blackjack\n\n"
 player_hand = Hand.new('Player')
 dealer_hand = Hand.new('Dealer')
 
-def play_blackjack(hand, ai, deck)
-  2.times {hand.hit(deck)}
-  puts "#{hand.player} score: #{hand.value}"
-  if ai
-    until hand.value > 16
+def hit_or_stand(hand, deck)
+  loop do
+    print 'Hit or stand (H/S):'
+    response = gets.chomp.downcase
+    if response == 'h'
       hand.hit(deck)
-      puts "#{hand.player} score: #{hand.value}"
-      if hand.bust?
-        puts "Bust! You Win!"
-        return hand.value
-      end
+      puts "#{hand}\n\n"
+      return :hit
+    elsif response == 's'
+      return :stand
+    else
+      puts 'Please type "h" to hit or "s" to stand.'
     end
-    puts "Dealer Stands."
-    return hand.value
-  else
-    response = ''
-    until response == 's'
-      print 'Hit or stand (H/S):'
-      response = gets.chomp.downcase
-      if response == 'h'
-        hand.hit(deck)
-        puts "#{hand.player} score: #{hand.value}"
-      elsif response != 's'
-        puts 'Please type "h" to hit or "s" to stand.'
-      end
-      if hand.bust?
-        puts "\nBust! You lose..."
-        return hand.value
-      end
-    end
-    return hand.value
   end
 end
 
-player_score = play_blackjack(player_hand, false, deck)
+def ai_blackjack(hand, deck)
+  2.times { hand.hit(deck) }
+  puts "#{hand}\n\n"
+  until hand.value > 16
+    puts 'Dealer hits.'
+    hand.hit(deck)
+    puts "#{hand}\n\n"
+    if hand.bust?
+      puts "\nDealer Busts! You Win!"
+      return hand.value
+    end
+  end
+  puts 'Dealer Stands.'
+  hand.value
+end
+
+def play_blackjack(hand, deck)
+  2.times { hand.hit(deck) }
+  puts "#{hand}\n\n"
+  response = nil
+  until response == :stand
+    response = hit_or_stand(hand, deck)
+    if hand.bust?
+      puts "\nBust! You lose..."
+      return hand.value
+    end
+  end
+  puts "Player Stands.\n\n"
+  hand.value
+end
+
+player_score = play_blackjack(player_hand, deck)
 unless player_score > 21
-  dealer_score = play_blackjack(dealer_hand, true, deck)
+  dealer_score = ai_blackjack(dealer_hand, deck)
   if dealer_score > 21
     puts ''
   elsif player_score > dealer_score
