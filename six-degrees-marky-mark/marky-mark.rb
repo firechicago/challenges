@@ -74,6 +74,7 @@ end_time = Time.now
 
 puts "Database built in #{end_time - start_time} seconds."
 
+start_time = Time.now
 def pathfind(start_actor, end_actor)
   previous = {}
   queue = []
@@ -125,3 +126,4 @@ elsif path
 else
   puts "There is no connection between #{target_actor} and Marky Mark."
 end
+puts "#{Time.now - start_time} seconds."
