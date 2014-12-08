@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
+require 'sinatra/reloader'
 require 'omniauth-github'
 
 require_relative 'config/application'
@@ -30,6 +31,7 @@ def authenticate!
 end
 
 get '/' do
+  @meetups = Meetup.all.sort_by{ |meetup| meetup.name }
   erb :index
 end
 
@@ -50,6 +52,19 @@ get '/sign_out' do
   redirect '/'
 end
 
-get '/example_protected_page' do
+get '/create' do
   authenticate!
+  erb :create
+end
+
+get '/meetups/:id' do
+  @meetup = Meetup.find(params['id'].to_i)
+  erb :show
+end
+
+post '/create' do
+  new_meetup = Meetup.create(name: params['Name'], location: params['Location'], description: params['Description'])
+  id = new_meetup.id.to_s
+  flash[:notice] = "Meetup \"#{new_meetup.name}\" created!"
+  redirect '/meetups/' + id
 end
