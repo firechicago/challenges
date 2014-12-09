@@ -49,7 +49,6 @@ end
 get '/sign_out' do
   session[:user_id] = nil
   flash[:notice] = "You have been signed out."
-
   redirect '/'
 end
 
@@ -60,7 +59,6 @@ end
 
 get '/meetups/:id' do
   @meetup = Meetup.find(params['id'].to_i)
-  # binding.pry
   erb :show
 end
 
@@ -85,4 +83,17 @@ get '/leave/:meetup_id' do
   Membership.destroy(membership[0].id)
   flash[:notice] = "You left #{Meetup.find(params['meetup_id']).name}"
   redirect '/meetups/' + params['meetup_id']
+end
+
+post '/comment/:meetup_id' do
+  authenticate!
+  meetup = Meetup.find(params['meetup_id'].to_i)
+  if meetup.users.include?(current_user)
+    Comment.create(user_id: current_user.id, meetup_id: meetup.id, content: params['content'])
+    flash[:notice] = 'Comment Posted'
+    redirect '/meetups/' + params['meetup_id']
+  else
+    flash[:notice] = "You must be a member of this meetup to comment."
+    redirect '/meetups/' + params['meetup_id']
+  end
 end

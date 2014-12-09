@@ -16,3 +16,25 @@
     </div>
   <% end %>
 </ul>
+<h2>Comments</h2>
+<% unless @meetup.comments.any? %>
+  <h3>Be the first to comment on this meetup!</h3>
+<% end %>
+<ul>
+  <% @meetup.comments.order(created_at: :desc).each do |comment| %>
+    <div class="row">
+      <div align="float-right"><p><%= comment.content %></p></div>
+      <div><h5><%= comment.user.username %> at <%= comment.created_at %></h5></div>
+    </div>
+  <% end %>
+</ul>
+
+<form action='/comment/<%= @meetup.id %>'  method='POST'>
+  <div class="row"><label>
+    <p>Comment</p>
+    <textarea name='content' cols="100" rows="15"></textarea>
+  </div></label>
+  <div class="row">
+    <button type='submit'>Submit Comment</button>
+  </div>
+</form>
