@@ -2,3 +2,17 @@
 <h1><%= @meetup.name %></h1>
 <h3><%= @meetup.location %></h3>
 <p><%= @meetup.description %></p>
+<% unless @meetup.users.include?(current_user) %>
+  <a href="/join/<%= @meetup.id %>">Click here to join this meetup!</a>
+<% else %>
+  <a href="/leave/<%= @meetup.id %>">Click here to leave this meetup!</a>
+<% end %>
+<h4>Attendees</h4>
+<ul>
+  <% @meetup.users.each do |attendee| %>
+    <div class="row">
+      <div><%= attendee.username %></div>
+      <img src="<%= attendee.avatar_url%>">
+    </div>
+  <% end %>
+</ul>

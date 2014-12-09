@@ -3,6 +3,7 @@ require 'sinatra/activerecord'
 require 'sinatra/flash'
 require 'sinatra/reloader'
 require 'omniauth-github'
+require 'pry'
 
 require_relative 'config/application'
 
@@ -59,12 +60,29 @@ end
 
 get '/meetups/:id' do
   @meetup = Meetup.find(params['id'].to_i)
+  # binding.pry
   erb :show
 end
 
 post '/create' do
   new_meetup = Meetup.create(name: params['Name'], location: params['Location'], description: params['Description'])
+  Membership.create(meetup_id: new_meetup.id, user_id: current_user.id)
   id = new_meetup.id.to_s
   flash[:notice] = "Meetup \"#{new_meetup.name}\" created!"
   redirect '/meetups/' + id
+end
+
+get '/join/:meetup_id' do
+  authenticate!
+  Membership.create(meetup_id: params['meetup_id'], user_id: current_user.id)
+  flash[:notice] = "You joined #{Meetup.find(params['meetup_id']).name}"
+  redirect '/meetups/' + params['meetup_id']
+end
+
+get '/leave/:meetup_id' do
+  authenticate!
+  membership = Membership.where(meetup_id: params['meetup_id'], user_id: current_user.id)
+  Membership.destroy(membership[0].id)
+  flash[:notice] = "You left #{Meetup.find(params['meetup_id']).name}"
+  redirect '/meetups/' + params['meetup_id']
 end
