@@ -63,6 +63,7 @@ get '/meetups/:id' do
 end
 
 post '/create' do
+  authenticate!
   new_meetup = Meetup.create(name: params['Name'], location: params['Location'], description: params['Description'])
   Membership.create(meetup_id: new_meetup.id, user_id: current_user.id)
   id = new_meetup.id.to_s
