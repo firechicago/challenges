@@ -20,7 +20,13 @@ helpers do
   end
 end
 
+def current_user
+  user_id = session[:user_id]
+  @current_user ||= User.find(user_id) if user_id.present?
+end
+
 def set_current_user(user)
+  # binding.pry
   session[:user_id] = user.id
 end
 
@@ -32,7 +38,7 @@ def authenticate!
 end
 
 get '/' do
-  @meetups = Meetup.all.sort_by{ |meetup| meetup.name }
+  @meetups = Meetup.all.sort_by { |meetup| meetup.name }
   erb :index
 end
 
@@ -42,7 +48,7 @@ get '/auth/github/callback' do
   user = User.find_or_create_from_omniauth(auth)
   set_current_user(user)
   flash[:notice] = "You're now signed in as #{user.username}!"
-
+  # binding.pry
   redirect '/'
 end
 

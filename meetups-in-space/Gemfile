@@ -10,8 +10,10 @@ gem 'sinatra-flash'
 
 group :test, :development do
   gem 'capybara'
-  gem 'sinatra/reloader'
   gem 'dotenv'
   gem 'pry'
   gem 'rspec'
+  gem 'factory_girl'
+  gem 'rack_session_access'
+  gem 'database_cleaner'
 end
