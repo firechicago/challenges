@@ -20,6 +20,7 @@ feature "User views a meetup page" do
     # * I should see the name of the meetup.
     # * I should see a description of the meetup.
     # * I should see where the meetup is located.
+    FactoryGirl.create_list(:meetup, 3)
     meetup = Meetup.first
     visit '/meetups/' + meetup.id.to_s
 
@@ -40,6 +41,7 @@ feature 'User views the index page' do
   # * Each meetup listed should link me to the show page for that meetup.
 
   scenario 'user sees a list of meetups' do
+    FactoryGirl.create_list(:meetup, 5)
     meetups = Meetup.all
     meetups.each do |meetup|
       visit '/'
@@ -63,15 +65,26 @@ feature 'User creates a meetup' do
   # * I must supply a description.
   # * I should be brought to the details page for the meetup after I create it.
   # * I should see a message that lets me know that I have created a meetup successfully.
+
+  # let(:user) { FactoryGirl.create(:user) }
+  #
+  # before :each do
+  #   @user = FactoryGirl.create(:user)
+  #   login(@user)
+  #   visit '/create'
+  # end
+
   scenario 'user not signed in' do
     visit '/create'
     expect(page).to have_content('You need to sign in if you want to do that!')
   end
 
   scenario 'user correctly creates meetup' do
+    mock_sign_in
     visit '/create'
-
+    expect(page).to have_content('Create a new meetup')
   end
+
   scenario 'user does not supply name'
   scenario 'user does not supply location'
   scenario 'user does not supply description'

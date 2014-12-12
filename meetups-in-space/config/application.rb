@@ -8,7 +8,6 @@ configure :development do
   also_reload 'app/**/*.rb'
 end
 
-
 configure do
   enable :sessions
   set :session_secret, ENV['SESSION_SECRET']
