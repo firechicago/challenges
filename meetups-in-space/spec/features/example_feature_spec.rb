@@ -83,6 +83,7 @@ feature 'User creates a meetup' do
     mock_sign_in
     visit '/create'
     expect(page).to have_content('Create a new meetup')
+    fill_in 
   end
 
   scenario 'user does not supply name'
@@ -112,12 +113,16 @@ feature 'View members' do
   # * On the details page for a meetup, I should see a list of the members that have already joined.
   # * I should see each member's avatar.
   # * I should see each member's username.
-  scenario 'viewing a meetup page' do
-    meetup = Meetup.first
-    visit '/' + meetup.id.to_s
+  scenario 'when viewing a meetup page' do
+    meetup = FactoryGirl.create(:meetup)
+    users = FactoryGirl.create_list(:user, 5)
+    users.each do |user|
+      Membership.create(user_id: user.id, meetup_id: meetup.id)
+    end
+    visit '/meetups/' + meetup.id.to_s
     meetup.users.each do |user|
-      expect(page).to have_content(user.name)
-      expect(page).to have_content(user.name)
+      expect(page).to have_content(user.username)
+      expect(page).to have_xpath("//img[contains(@src,\"#{user.avatar_url}\")]")
     end
   end
 end

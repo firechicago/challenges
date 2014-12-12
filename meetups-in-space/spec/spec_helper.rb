@@ -6,15 +6,7 @@ require 'capybara/rspec'
 require 'factory_girl'
 require 'factories'
 require 'database_cleaner'
-# require 'rack_session_access'
-# require 'rack_session_access/capybara'
-# require 'rack_session_access/middleware'
 require_relative '../app.rb'
-
-# RSpec.configure do |config|
-#   # if you want to build(:user) instead of Factory.build(:user)
-#   config.include Factory::Syntax::Methods
-# end
 
 Capybara.app = Sinatra::Application
 

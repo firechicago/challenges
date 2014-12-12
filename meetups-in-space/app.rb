@@ -44,11 +44,9 @@ end
 
 get '/auth/github/callback' do
   auth = env['omniauth.auth']
-
   user = User.find_or_create_from_omniauth(auth)
   set_current_user(user)
   flash[:notice] = "You're now signed in as #{user.username}!"
-  # binding.pry
   redirect '/'
 end
 

@@ -1,5 +1,4 @@
 require 'pry'
-# binding.pry
 
 def random_string(n)
   string = ''
@@ -17,7 +16,6 @@ FactoryGirl.define do
   end
 
   factory :meetup do
-    # binding.pry
     sequence(:name) {random_string(5)}
     sequence(:location) {random_string(5)}
     sequence(:description) {random_string(50)}
