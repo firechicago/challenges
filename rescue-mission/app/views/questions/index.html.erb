@@ -1,0 +1,13 @@
+<ul>
+  <% @questions.each do |question| %>
+    <li>
+      <a href="/questions/<%=question.id%>">
+      <%= question.title %>
+      </a>
+    </li>
+  <% end %>
+</ul>
+
+<%unless current_user.nil?%>
+<a href="/questions/new">Post a Question</a>
+<%end%>
