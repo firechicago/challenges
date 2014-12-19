@@ -1,0 +1,19 @@
+<h1><%= @restaurant.name %></h1>
+<h5>Category: <%= @restaurant.category %></h5>
+<h5>Address<h5>
+<p>
+  <%= @restaurant.address %><br>
+  <%= @restaurant.city%>, <%= @restaurant.state %><br>
+  <%= @restaurant.zip %><br>
+</p>
+<h3>Description:</h3>
+<p><%= @restaurant.description %> </p>
+
+<ul>
+  <% @restaurant.reviews.each do |review| %>
+  <li><%= review.review_text %></li>
+  <%end%>
+</ul>
+<p><a href="/restaurants/<%=@restaurant.id%>/reviews/new">
+  Click here to add a review!
+</a></p>

@@ -1,0 +1,15 @@
+<h1>Good Eats!</h1>
+<ul>
+  <% @restaurants.each do |restaurant| %>
+  <li>
+    <a href="/restaurants/<%= restaurant.id %>">
+      <%= restaurant.name %>
+    </a>
+  </li>
+  <% end %>
+</ul>
+<p>
+  <a href="/restaurants/new">
+    Click Here to Add Your Favorite Restaurant!
+  </a>
+</p>

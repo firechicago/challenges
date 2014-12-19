@@ -1,0 +1,13 @@
+<h1>Add a New Review</h1>
+<%= form_for ([:restaurant, @review]) do |f| %>
+
+<%= f.label :review_text %>
+<%= f.text_field :review_text %><br />
+<%= f.hidden_field :restaurant_id, :value => @restaurant.id %>
+<%= f.submit %>
+<% end %>
+
+
+<% @review.errors.full_messages.each do |error| %>
+<p><%= error %></p>
+<% end %>
