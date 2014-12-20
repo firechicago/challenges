@@ -1,0 +1,21 @@
+<% if current_user %>
+<h1>Edit a Question</h1>
+<%= form_for @question do |f| %>
+<%= f.label :title %>:
+<%= f.text_field :title %><br />
+
+<%= f.label :description %>:
+<%= f.text_area :description %><br />
+<%= f.hidden_field :user_id, :value => current_user.id %>
+<%= f.hidden_field :id, :value => @question.id %>
+<%= f.submit %>
+<% end %>
+<% else %>
+<p>You must be logged in to edit a question</p>
+<%end%>
+
+<% unless @question.nil? %>
+<% @question.errors.full_messages.each do |error| %>
+<p><%= error %></p>
+<% end %>
+<% end %>

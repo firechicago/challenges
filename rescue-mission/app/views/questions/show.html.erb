@@ -1,2 +1,37 @@
 <h1><%= @question.title %></h1>
 <p><%= @question.description %></p>
+<% if current_user && current_user.id == @question.user_id %>
+<p>
+  <a href= "/questions/<%= @question.id %>/edit">
+    Click here to edit your question
+  </a>
+</p>
+<% end %>
+<h3>Answers</h3>
+<ul>
+<% @question.answers.each do |answer|%>
+  <li>
+    <%= answer.description %>
+    <p><%= answer.user.name %></p>
+  </li>
+<%end%>
+</ul>
+
+<% if current_user %>
+<h3>Post an Answer</h3>
+<%= form_for @answer do |f| %>
+<%= f.label :description %>:
+<%= f.text_area :description %><br />
+<%= f.hidden_field :user_id, :value => current_user.id %>
+<%= f.hidden_field :question_id, :value => @question.id %>
+<%= f.submit %>
+<% end %>
+<% else %>
+<p>You must be logged in to post an answer</p>
+<%end%>
+
+<% unless @answer.nil? %>
+<% @answer.errors.full_messages.each do |error| %>
+<p><%= error %></p>
+<% end %>
+<% end %>
