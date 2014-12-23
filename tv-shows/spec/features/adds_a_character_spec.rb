@@ -19,7 +19,8 @@ feature 'user adds a new character', %Q{
         actor_name: 'Sean Bean',
         description: 'Lord of the North'
       }
-      show = TelevisionShow.first
+      show = TelevisionShow.create(title: 'Game of Thrones',
+      network: 'HBO' )
       char = Character.new(attrs)
 
       visit "/television_shows/#{show.id}/new"
@@ -30,11 +31,13 @@ feature 'user adds a new character', %Q{
 
       expect(page).to have_content 'Success'
       expect(page).to have_content char.character_name
-      expect(page).to_not have_content char.actor_name
-      expect(page).to_not have_content char.description
+      expect(page).to have_content char.actor_name
+      expect(page).to have_content char.description
     end
 
     scenario 'without required attributes' do
+      show = TelevisionShow.create(title: 'Game of Thrones',
+      network: 'HBO' )
       visit "/television_shows/#{show.id}/new"
       click_on 'Submit'
 
@@ -42,5 +45,19 @@ feature 'user adds a new character', %Q{
       expect(page).to have_content "can't be blank"
     end
 
-    scenario 'user cannot add a character that is already in the database'
+    scenario 'user cannot add a character that is already in the database' do
+      attrs = {
+        character_name: 'Ned Stark',
+        actor_name: 'Sean Bean'
+      }
+      show = TelevisionShow.create(title: 'Game of Thrones',
+      network: 'HBO' )
+      char = Character.new(attrs)
+
+      visit "/television_shows/#{show.id}/new"
+      fill_in 'Character Name', with: char.character_name
+      fill_in 'Actor Name', with: char.actor_name
+
+      expect(page).to_not have_content 'Success'
+    end
   end
