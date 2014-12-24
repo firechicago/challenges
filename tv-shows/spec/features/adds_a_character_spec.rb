@@ -23,7 +23,7 @@ feature 'user adds a new character', %Q{
       network: 'HBO' )
       char = Character.new(attrs)
 
-      visit "/television_shows/#{show.id}/new"
+      visit "/television_shows/#{show.id}/characters/new"
       fill_in 'Character Name', with: char.character_name
       fill_in 'Actor Name', with: char.actor_name
       fill_in 'Description', with: char.description
@@ -38,7 +38,7 @@ feature 'user adds a new character', %Q{
     scenario 'without required attributes' do
       show = TelevisionShow.create(title: 'Game of Thrones',
       network: 'HBO' )
-      visit "/television_shows/#{show.id}/new"
+      visit "/television_shows/#{show.id}/characters/new"
       click_on 'Submit'
 
       expect(page).to_not have_content 'Success'
@@ -54,7 +54,7 @@ feature 'user adds a new character', %Q{
       network: 'HBO' )
       char = Character.new(attrs)
 
-      visit "/television_shows/#{show.id}/new"
+      visit "/television_shows/#{show.id}/characters/new"
       fill_in 'Character Name', with: char.character_name
       fill_in 'Actor Name', with: char.actor_name
 

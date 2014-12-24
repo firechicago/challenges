@@ -1,0 +1,27 @@
+<%= form_for @character do |f| %>
+
+<% if @character.errors.any? %>
+<ul>
+  <% @character.errors.full_messages.each do |msg| %>
+  <li><%= msg %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<div>
+  <%= f.label :character_name %>
+  <%= f.text_field :character_name %>
+</div>
+
+<div>
+  <%= f.label :actor_name %>
+  <%= f.text_field :actor_name %>
+</div>
+
+<div>
+  <%= f.label :description %>
+  <%= f.text_field :description %>
+</div>
+
+<%= f.submit 'Submit' %>
+<% end %>
