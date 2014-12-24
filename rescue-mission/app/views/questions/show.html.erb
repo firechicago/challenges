@@ -1,4 +1,5 @@
 <h1><%= @question.title %></h1>
+<<<<<<< HEAD
 <p><%= @question.description %></p>
 <% if current_user && current_user.id == @question.user_id %>
 <p>
@@ -35,3 +36,70 @@
 <p><%= error %></p>
 <% end %>
 <% end %>
+=======
+
+<p>
+  <%= markdown(@question.description) %>
+</p>
+<p>
+  <%= link_to 'Edit Question', edit_question_path %>
+</p>
+
+<%= form_for(@answer) do |f| %>
+
+  <% if @answer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this response from being saved:</h2>
+      <ul>
+        <% @answer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.hidden_field :question_id, :value => @question.id %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.text_area :user_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+
+<% end %>
+
+
+
+<% unless @question.best_answer == nil %>
+  <%= markdown(Answer.find(@question.best_answer).description) %>
+<% end %>
+
+
+<h4>Other Answers:</h4>
+
+<ul>
+  <% @answers.each do |answer| %>
+  <li>
+    <%= markdown(answer.description) %>
+    <%= form_for(@question) do |f| %>
+      <div class="field">
+        <%= f.hidden_field :best_answer, :value => answer.id %>
+      </div>
+      <div class="actions">
+        <%= f.submit 'Mark As Best Answer' %>
+      </div>
+    <% end %>
+  </li>
+  <% end %>
+</ul>
+
+<%= button_to "Delete", @question, :method=>:delete, :class=>:destroy %>
+
+<a href="/questions">Back to Questions</a>
+>>>>>>> 6e871fb4e0efaf7d37fd2daf1218c52c13e64a73

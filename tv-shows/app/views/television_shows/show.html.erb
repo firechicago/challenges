@@ -8,3 +8,12 @@
 <div>
   <%= @television_show.synopsis %>
 </div>
+
+<ul>
+  <% @television_show.characters.each do |character| %>
+  <li>
+    <strong><%= character.character_name %></strong> -
+    <%= character.description %> ...... <em><%= character.actor_name %></em>
+  </li>
+  <% end %>
+</ul>

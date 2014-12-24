@@ -1,13 +1,21 @@
 <ul>
   <% @questions.each do |question| %>
     <li>
+<<<<<<< HEAD
       <a href="/questions/<%=question.id%>">
       <%= question.title %>
       </a>
+=======
+      <a href="/questions/<%= question.id %>"><h4><%= question.title %></h4></a>
+>>>>>>> 6e871fb4e0efaf7d37fd2daf1218c52c13e64a73
     </li>
   <% end %>
 </ul>
 
+<<<<<<< HEAD
 <%unless current_user.nil?%>
 <a href="/questions/new">Post a Question</a>
 <%end%>
+=======
+<a href="/questions/new">Ask a new question!</a>
+>>>>>>> 6e871fb4e0efaf7d37fd2daf1218c52c13e64a73

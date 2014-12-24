@@ -24,8 +24,8 @@ feature 'user adds a new character', %Q{
       char = Character.new(attrs)
 
       visit "/television_shows/#{show.id}/characters/new"
-      fill_in 'Character Name', with: char.character_name
-      fill_in 'Actor Name', with: char.actor_name
+      fill_in 'Character name', with: char.character_name
+      fill_in 'Actor name', with: char.actor_name
       fill_in 'Description', with: char.description
       click_on 'Submit'
 
@@ -55,8 +55,8 @@ feature 'user adds a new character', %Q{
       char = Character.new(attrs)
 
       visit "/television_shows/#{show.id}/characters/new"
-      fill_in 'Character Name', with: char.character_name
-      fill_in 'Actor Name', with: char.actor_name
+      fill_in 'Character name', with: char.character_name
+      fill_in 'Actor name', with: char.actor_name
 
       expect(page).to_not have_content 'Success'
     end

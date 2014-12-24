@@ -7,11 +7,31 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<<<<<<< HEAD
 <%if current_user.nil?%>
   <a href="/auth/developer/callback">Sign In</a>
 <%else%>
   <a href="/signout">Sign Out</a>
 <%end%>
+=======
+
+  <div id="user_nav">
+    <% if current_user %>
+      Welcome, <%= current_user.name %>!
+      <%= link_to "Sign Out", signout_path %>
+    <% else %>
+      <%= link_to "Sign in with Twitter", "/auth/twitter" %>
+    <% end %>
+  </div>
+
+  <% if notice %>
+    <p class="alert alert-success"><%= notice %></p>
+  <% end %>
+  <% if alert %>
+    <p class="alert alert-danger"><%= alert %></p>
+  <% end %>
+
+>>>>>>> 6e871fb4e0efaf7d37fd2daf1218c52c13e64a73
 <%= yield %>
 
 </body>

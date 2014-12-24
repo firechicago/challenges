@@ -1,4 +1,4 @@
-<%= form_for @character do |f| %>
+<%= form_for [:television_show, @character] do |f| %>
 
 <% if @character.errors.any? %>
 <ul>
@@ -22,6 +22,8 @@
   <%= f.label :description %>
   <%= f.text_field :description %>
 </div>
+
+<%= f.hidden_field :television_show_id, :value => @television_show.id %>
 
 <%= f.submit 'Submit' %>
 <% end %>

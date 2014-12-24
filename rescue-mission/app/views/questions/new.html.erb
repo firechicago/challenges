@@ -4,6 +4,7 @@
     <%= f.label :title %>:
     <%= f.text_field :title %><br />
 
+<<<<<<< HEAD
     <%= f.label :description %>:
     <%= f.text_area :description %><br />
     <%= f.hidden_field :user_id, :value => current_user.id %>
@@ -18,3 +19,8 @@
   <p><%= error %></p>
 <% end %>
 <% end %>
+=======
+<%= render 'form' %>
+<br>
+<%= link_to 'Back', questions_path %>
+>>>>>>> 6e871fb4e0efaf7d37fd2daf1218c52c13e64a73
