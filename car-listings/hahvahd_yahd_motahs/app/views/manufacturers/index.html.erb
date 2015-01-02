@@ -1,0 +1,10 @@
+<h1>List of manufacturers</h1>
+<ul>
+  <% @manufacturers.each do |manufacturer| %>
+  <li>
+    <a href="<%= manufacturer_path(manufacturer) %>">
+      <%= manufacturer.name %>
+    </a>
+  </li>
+  <% end %>
+</ul>
